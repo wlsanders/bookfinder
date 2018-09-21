@@ -1,8 +1,43 @@
 {% extends 'base.html' %}
 
 {% block content %}
+      <section class="jumbotron text-center">
+        <div class="container">
+          <h1 class="jumbotron-heading">Book Finder</h1>
+          <p class="lead text-muted">Welcome to Book Finder!</p>
+          <p>
+            <a href="#" class="btn btn-primary my-2">Browse Tags</a>
+            <a href="#" class="btn btn-secondary my-2">Suggest a Book</a>
+          </p>
+        </div>
+      </section>
 
-books
+{% for book in books.all %}
+
+
+
+
+
+<div class="row pt-3">
+  <div class="card mb-4 shadow-sm">
+  <div class="col-6" onclick="window.location='{% url 'detail' book.id %}';" style="cursor: pointer;">
+    <img src="{{ book.image.url }}" class="img-fluid"  />
+  </div>
+  <div class="col-6" onclick="window.location='{% url 'detail' book.id %}';" style="cursor: pointer;">
+    <h1>{{ book.title }}</h1>
+    <p>{{ book.summary }}</p>
+  </div>
+  <div class="col-4">
+    <a href="javascript:{document.getElementById('upvote{{ book.id }}').submit()}"><button class="btn btn-primary btn-lg btn-block"><span class="oi oi-caret-top"></span> Upvote {{ book.votes_total }}</button></a>
+  </div>
+</div>
+</div>
+
+<form id="upvote{{ book.id }}" method="POST" action="{% url 'upvote' book.id %}">
+  {% csrf_token%}
+  <input type="hidden">
+</form>
+{% endfor %}
 
 
 {% endblock %}
